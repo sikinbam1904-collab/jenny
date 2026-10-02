@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>𐙚 JENNY SHOP ⁎ ♡</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Firebase Compat Libraries -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&family=Mitr:wght@300;400;500;600&display=swap');
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            list-style: none !important;
+            list-style-type: none !important;
+            box-sizing: border-box;
+        }
+
+        *::marker {
+            display: none !important;
+            content: "" !important;
+        }
+
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Mitr', sans-serif;
+            background: linear-gradient(-45deg, #FFB7C5, #FFE4E1, #FFD1DC, #FBC5D8, #FFE5EC);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            color: #6D4C57;
+            transition: background 0.5s ease;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(-5vh) rotate(0deg) scale(0.7); opacity: 0; }
+            20% { opacity: 0.9; }
+            80% { opacity: 0.9; }
+            100% { transform: translateY(105vh) rotate(180deg) scale(1.1); opacity: 0; }
+        }
+
+        .cafe-drop {
+            position: fixed;
+            font-size: 20px;
+            animation: floatParticle linear forwards;
+            z-index: 10;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 5px rgba(226, 73, 120, 0.3));
+        }
+
+        .viewport-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            padding: 12px;
+        }
+
+        .device-container {
+            width: 100%;
+            max-width: 400px;
+            height: 96vh;
+            height: 96dvh;
+            max-height: 870px;
+            background: #FFF9FA;
+            position: relative;
+            border-radius: 42px;
+            border: 7px solid #FFFFFF;
+            box-shadow: 0 20px 50px rgba(244, 143, 177, 0.35), 0 0 30px rgba(255, 182, 193, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            transform: translateZ(0);
+        }
+
+        @media (min-width: 768px) {
+            .device-container {
+                height: 92vh;
+                height: 92dvh;
+                border-radius: 46px;
+                border: 8px solid #FFFFFF;
+            }
+        }
+
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            padding: 12px 22px 4px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #E24978;
+            font-size: 0.85rem;
+            font-weight: 800;
+            z-index: 90;
+            background: transparent;
+            pointer-events: auto;
+        }
+
+        .mini-music-btn {
+            background: #FFF0F4;
+            border: 1px solid #FFC2D1;
+            color: #E24978;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(226, 73, 120, 0.2);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .mini-music-btn:active {
+            transform: scale(0.92);
+        }
+
+        .mini-music-btn.playing {
+            background: #FFE5EC;
+            color: #C2185B;
+            border-color: #FF85A1;
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 133, 161, 0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(255, 133, 161, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 133, 161, 0); }
+        }
+
+        .horizontal-cover-widget {
+            position: relative;
+            margin: 48px 16px 12px 16px;
+            border-radius: 26px;
+            overflow: hidden;
+            height: 160px;
+            background-color: #FFF0F4;
+            box-shadow: 0 8px 22px rgba(226, 73, 120, 0.18), inset 0 0 0 2px #FFE5EC;
+            transition: transform 0.3s ease;
+            z-index: 40;
+            flex-shrink: 0;
+        }
+
+        .cover-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .screen {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0 16px 20px 16px;
+            position: relative;
+            scrollbar-width: none;
+        }
+        .screen::-webkit-scrollbar {
+            display: none;
+        }
+
+        .app-grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            padding-top: 6px;
+            padding-bottom: 24px;
+        }
+
+        .app-card-block {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 18px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.28);
+            border: 2px solid #FFE5EC;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            min-height: 125px;
+        }
+
+        .app-card-block:hover {
+            transform: translateY(-3px);
+            border-color: #FFB3C6;
+            box-shadow: 0 12px 24px rgba(226, 73, 120, 0.22);
+        }
+
+        .app-card-block:active {
+            transform: scale(0.95);
+            background: #FFF0F4;
+        }
+
+        .app-icon-square {
+            width: 50px;
+            height: 50px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.35rem;
+            color: #E24978;
+            background-color: #FFE5EC;
+            border: 1px solid #FFC2D1;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .app-title-main {
+            color: #4A323A;
+            font-size: 0.95rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .app-title-sub {
+            color: #A36B7E;
+            font-size: 0.68rem;
+            font-weight: 600;
+            margin-top: 4px;
+            line-height: 1.1;
+        }
+
+        .detail-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: #FFFFFF;
+            z-index: 80;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            border-radius: inherit;
+            overflow: hidden;
+        }
+
+        .detail-view.active {
+            transform: translateX(0);
+        }
+
+        .detail-header {
+            padding-top: 46px;
+            padding-bottom: 12px;
+            padding-left: 14px;
+            padding-right: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid #FFE5EC;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+        }
+
+        .back-btn {
+            font-size: 0.78rem;
+            color: #E24978;
+            background: #FFF0F4;
+            padding: 6px 12px;
+            border-radius: 18px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 700;
+            border: 1px solid #FFC2D1;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .back-btn:active {
+            transform: scale(0.92);
+        }
+
+        .detail-title {
+            flex: 1;
+            padding: 0 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .detail-header-spacer {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 40px;
+        }
+
+        .list-item {
+            background-color: #FFFFFF;
+            border-radius: 20px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(255, 182, 193, 0.18);
+            border: 1.5px solid #FFE5EC;
+            width: 100%;
+        }
+
+        .number-text {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #C2185B;
+            letter-spacing: 0.3px;
+        }
+
+        .copy-btn {
+            background: #FFE5EC;
+            color: #E24978;
+            border: 1px solid #FFC2D1;
+            border-radius: 12px;
+            padding: 6px 14px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.92);
+            background: #E24978;
+            color: #FFFFFF;
+        }
+
+        .profile-img-container {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 4px solid #FFC2D1;
+            padding: 4px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(226, 73, 120, 0.25);
+            margin: 0 auto 12px auto;
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(109, 76, 87, 0.45);
+            backdrop-filter: blur(5px);
+            z-index: 150;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            width: 90%;
+            max-width: 360px;
+            border-radius: 28px;
+            padding: 22px 18px;
+            box-shadow: 0 20px 40px rgba(226, 73, 120, 0.25);
+            border: 2px solid #FFC2D1;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .home-indicator {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background-color: #FFC2D1;
+            border-radius: 10px;
+            z-index: 90;
+        }
+
+        .toast-notification {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #E24978;
+            color: #FFFFFF;
+            padding: 9px 20px;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(226, 73, 120, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 100;
+            transition: top 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast-notification.show {
+            top: 52px;
+        }
+
+        .review-input, .review-textarea {
+            user-select: auto;
+        }
+    </style>
+</head>
+<body id="pageBody">
+
+    <!-- 🎵 เครื่องเล่นเพลง MP3 🎵 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://mp3tourl.com/audio/1789634299152-602be8e3-243f-4dc5-881b-41ae0330830f.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Review Popup Modal -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-sm font-bold text-[#D81B60]"><i class="fas fa-heart mr-1"></i> เขียนรีวิวความประทับใจ</h3>
+                <button onclick="closeReviewModal()" class="w-7 h-7 rounded-full bg-[#FFF0F5] text-[#D81B60] flex items-center justify-center text-xs font-bold border border-[#FFC0CB]">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <input type="text" id="reviewName" placeholder="ชื่อของคุณลูกค้า..." class="review-input w-full mb-3 p-2.5 rounded-xl bg-[#FFF0F5] border border-[#FFC0CB] text-sm text-[#4A353B] outline-none focus:border-[#D81B60] focus:ring-1 focus:ring-[#D81B60] transition-all placeholder:text-[#AD7A8B]">
+            
+            <input type="text" id="reviewChannel" placeholder="สินค้า/บริการที่สั่งซื้อ..." class="review-input w-full mb-3 p-2.5 rounded-xl bg-[#FFF0F5] border border-[#FFC0CB] text-sm text-[#4A353B] outline-none focus:border-[#D81B60] focus:ring-1 focus:ring-[#D81B60] transition-all placeholder:text-[#AD7A8B]">
+            
+            <textarea id="reviewComment" placeholder="ความประทับใจที่อยากบอกทางร้าน..." rows="3" class="review-textarea w-full mb-3 p-2.5 rounded-xl bg-[#FFF0F5] border border-[#FFC0CB] text-sm text-[#4A353B] outline-none focus:border-[#D81B60] focus:ring-1 focus:ring-[#D81B60] transition-all resize-none placeholder:text-[#AD7A8B]"></textarea>
+
+            <div class="mb-3 flex items-center justify-between bg-[#FFF0F5] p-2.5 rounded-xl border border-[#FFC0CB]">
+                <span class="text-xs font-bold text-[#D81B60]">ให้คะแนน:</span>
+                <div class="inline-flex gap-1.5" id="starSelection">
+                    <i class="fas fa-star text-gray-300 text-lg cursor-pointer transition-colors" onclick="setRating(1)"></i>
+                    <i class="fas fa-star text-gray-300 text-lg cursor-pointer transition-colors" onclick="setRating(2)"></i>
+                    <i class="fas fa-star text-gray-300 text-lg cursor-pointer transition-colors" onclick="setRating(3)"></i>
+                    <i class="fas fa-star text-gray-300 text-lg cursor-pointer transition-colors" onclick="setRating(4)"></i>
+                    <i class="fas fa-star text-gray-300 text-lg cursor-pointer transition-colors" onclick="setRating(5)"></i>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="text-[11px] font-bold text-[#D81B60] block mb-1.5"><i class="fas fa-image mr-1"></i>แนบรูปภาพรีวิว (ไม่บังคับ):</label>
+                <input type="file" id="evidenceFile" accept="image/*" onchange="handleImagePreview(event)" class="w-full text-xs text-[#8C5B6B] file:mr-3 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#FFE4E1] file:text-[#D81B60] hover:file:bg-[#FFC0CB] transition-colors cursor-pointer outline-none">
+                
+                <div id="imagePreviewContainer" class="hidden mt-2 relative rounded-xl overflow-hidden border-2 border-[#FFC0CB]">
+                    <img id="imagePreview" src="" alt="Preview" class="w-full h-32 object-cover">
+                    <button type="button" onclick="removeSelectedImage()" class="absolute top-1.5 right-1.5 bg-[#D81B60] text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md hover:bg-[#C2185B] transition-transform active:scale-90">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button id="submitBtn" onclick="submitReview()" class="w-full bg-[#D81B60] hover:bg-[#C2185B] text-white font-extrabold py-3 rounded-xl shadow-md active:scale-95 transition-all text-sm flex justify-center items-center gap-2">
+                <i class="fas fa-paper-plane" id="submitIcon"></i> <span id="submitText">ส่งรีวิวค่ะ ✨</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="viewport-wrapper">
+        <div class="device-container">
+
+            <div style="position: absolute; width: 220px; height: 220px; background: #FFE4E1; border-radius: 50%; filter: blur(50px); top: -40px; left: -40px; z-index: 0; opacity: 0.8;"></div>
+            <div style="position: absolute; width: 240px; height: 240px; background: #FFF0F5; border-radius: 50%; filter: blur(60px); bottom: 30px; right: -60px; z-index: 0; opacity: 0.9;"></div>
+
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <span id="clock"><i class="fas fa-heart text-pink-500 mr-1.5"></i>02:59</span>
+                <div class="flex gap-3 items-center text-xs">
+                    <button class="mini-music-btn" id="miniMusicBtn" onclick="togglePlay()" title="เปิด/ปิด เพลงบรรยากาศ">
+                        <i class="fas fa-music text-[11px]" id="miniMusicIcon"></i>
+                    </button>
+                    <i class="fas fa-wifi text-[#FF69B4]"></i>
+                    <i class="fas fa-battery-full text-sm text-[#FF69B4]"></i>
+                </div>
+            </div>
+
+            <!-- Toast Alert Notification -->
+            <div class="toast-notification" id="toastAlert">
+                <i class="fas fa-check-circle text-white" id="toastIcon"></i>
+                <span id="toastText">คัดลอกข้อมูลเรียบร้อยแล้วค่ะ</span>
+            </div>
+
+            <!-- Cover Image Widget -->
+            <div class="horizontal-cover-widget" id="coverWidget">
+                <img src="https://s15.gifyu.com/images/bQEkD.jpg" 
+                     alt="Cover Widget Image" 
+                     class="cover-bg-image" 
+                     id="coverImg">
+            </div>
+
+            <!-- Home Screen Content -->
+            <div class="screen" id="homeScreen">
+                <div class="text-center my-2 relative z-10">
+                    <div class="inline-flex items-center gap-1 bg-[#FFE5EC] px-4 py-1 rounded-full border border-[#FFC2D1] text-[#E24978] text-[11px] font-bold mb-1 shadow-sm tracking-wide">
+                        <span>🎀 WELCOME TO MY LAND 🎀</span>
+                    </div>
+                    
+                    <h1 class="text-2xl font-black text-[#E24978] tracking-tight mt-1 mb-1 drop-shadow-sm">
+                        𐙚𐬹 ⋆₊ ﾟJENNY SHOP⁎ ♡ 𓈒 ᱸ
+                    </h1>
+                    
+                    <p class="text-[11px] text-[#A36B7E] font-bold mt-0.5">
+                        𓈒ׅ ♡ֹ𓈒ׅ𓈒ร้านเจนนี่&gt; ﻌ &lt;𓈒ׅ𓈒ׅ♥𓈒 ᱸ
+                    </p>
+                </div>
+                
+                <!-- Cards Grid - 2x2 Block Layout -->
+                <div class="app-grid-2x2 relative z-10" id="appGrid"></div>
+            </div>
+
+            <!-- Detailed Sub-page View -->
+            <div class="detail-view" id="detailView">
+                <div class="detail-header">
+                    <div class="back-btn" onclick="closeDetail()">
+                        <i class="fas fa-chevron-left"></i>
+                        <span>ย้อนกลับ</span>
+                    </div>
+                    <div class="detail-title" id="detailTitle"></div>
+                    <div class="detail-header-spacer"></div>
+                </div>
+                
+                <div class="list-container" id="listContainer"></div>
+                <div class="home-indicator"></div>
+            </div>
+
+            <div class="home-indicator"></div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0weARjrIk1drW7g93XRitjoX80Izeb6A",
+            authDomain: "jenny-3ddd5.firebaseapp.com",
+            projectId: "jenny-3ddd5",
+            storageBucket: "jenny-3ddd5.firebasestorage.app",
+            messagingSenderId: "308632819741",
+            appId: "1:308632819741:web:b887c779125a3341edcef4",
+            measurementId: "G-EEMGP5ZTFQ"
+        };
+
+        let db = null;
+        if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "your-api-key") {
+            try {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+            } catch (error) {
+                console.error("Firebase init error:", error);
+            }
+        }
+
+        const WIDGET_COVER_URL = "https://s15.gifyu.com/images/bQEkD.jpg";
+
+        // Category items based on Brief
+        const categories = [
+            {
+                id: 'reviews', 
+                mainTitle: 'Review', 
+                subTitle: 'รีวิวจากลูกค้าที่น่ารัก', 
+                icon: 'fas fa-star', 
+                type: 'reviews'
+            },
+            {
+                id: 'products', 
+                mainTitle: 'Product/Service', 
+                subTitle: 'สินค้าและบริการของเรา', 
+                icon: 'fas fa-shopping-basket', 
+                type: 'links',
+                items: [
+                    { label: '♡ อัพเดตรันคิวงานทุกวัน เช็ค(ดูง่ายคั๊บ)👈🏻', link: 'https://jenny-cute-queue.edgeone.dev/' },
+                    { label: '🌟รวมผลงานทั้งหมด🌟', link: 'https://drive.google.com/drive/folders/1x0VE-UJoEO04gopyYzG1itJTE0lwIeov' },
+                    { label: '🏠 Map storage hunters House', link: 'https://drive.google.com/drive/folders/1YWskRf-Lqjk872E-GLQx92ArM_FtdFig' },
+                    { label: '♡ กฏร้านเจนนี่สำหรับงานสร้างบ้าน', link: 'https://opl.to/jennycute' },
+                    { label: '🎀 ฟาร์มเงิน • ไอเทม • เควส', link: 'https://drive.google.com/drive/folders/14T-N3XGQinNFsksKIMcvtozJDYnef8Ld' },
+                    { label: '💗 ส่งของ & แลกไอเทม', link: 'https://drive.google.com/drive/folders/11HpAq7-qpTkqdeHDWSr25D9mmkNG0IyG' }
+                ]
+            },
+            {
+                id: 'payment', 
+                mainTitle: 'Payment', 
+                subTitle: 'ธนาคาร & คิวอาร์โค้ด', 
+                icon: 'fas fa-wallet', 
+                type: 'payment',
+                headerGif: 'https://s13.gifyu.com/images/bujVl.gif',
+                bankImage: 'https://s13.gifyu.com/images/bujCD.png',
+                items: [
+                    { label: '⸝⸝❤︎ ─ ૮꒰ྀི⊃⸝ ⸝ ⸝⊂꒱ྀིა ธนาคารกสิกร ᯓ✦∘', number: '132-3-82254-5' },
+                    { label: '⸝⸝❤︎ ─ ૮꒰ྀི⊃⸝ ⸝ ⸝⊂꒱ྀིა พร้อมเพย์ ᯓ✦∘', number: '0811022294' },
+                    { label: 'TRUE MONEY WALLET (ทรูมันนี่)', number: '0811022294' }
+                ]
+            },
+            { 
+                id: 'contact', 
+                mainTitle: 'Contact', 
+                subTitle: 'ช่องทางการติดต่อ', 
+                icon: 'fas fa-address-book', 
+                type: 'contact',
+                profileGif: 'https://www.image2url.com/r2/default/videos/1789632321840-d7aa0068-fee2-4827-b37d-5df676047f2a.mp4',
+                items: [
+                    { label: '♡ INSTAGRAM', number: 'Jennycute.y5z_', link: 'https://www.instagram.com/jennycute.y5z_?stkn=MWF2aG94NGhyNjJjbA%3D%3D&utm_source=qr' },
+                    { label: '♡ LINE', number: 'Jenny2005na', copyable: true },
+                    { label: '♡ FACEBOOK', number: 'Jenny', copyable: true },
+                    { label: '♡ ROBLOX', number: 'E_noojenny', link: 'https://www.roblox.com/share?code=9a5d0e484a731b4daa5d737bbecbcf00&type=Profile&source=ProfileShare&stamp=1789540387452' }
+                ]
+            }
+        ];
+
+        let reviewsData = [];
+        
+        function initFirebaseReviews() {
+            if(!db) {
+                reviewsData = [
+                    { name: 'คุณเนย', channel: 'สร้างบ้าน Roblox', comment: 'งานไวน่ารักมากๆ ค่ะ ร้านเจนนี่บริการดีสุดๆ ไว้จะมาอุดหนุนอีกนะคะ 💖', rating: 5, date: '17/09/2026 14:30', evidence: null }
+                ];
+                renderReviewsList();
+                return;
+            }
+
+            db.collection("jenny_reviews").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+                reviewsData = []; 
+                snapshot.forEach((doc) => {
+                    reviewsData.push(doc.data()); 
+                });
+                renderReviewsList(); 
+            }, (error) => {
+                console.error("Error fetching reviews:", error);
+                if (reviewsData.length === 0) {
+                     reviewsData = [
+                         { name: 'คุณเนย', channel: 'สร้างบ้าน Roblox', comment: 'งานไวน่ารักมากๆ ค่ะ ร้านเจนนี่บริการดีสุดๆ ไว้จะมาอุดหนุนอีกนะคะ 💖', rating: 5, date: '17/09/2026 14:30', evidence: null }
+                     ];
+                     renderReviewsList();
+                 }
+            });
+        }
+
+        let currentRating = 0;
+        let isPlaying = false;
+        let toastTimeout = null;
+
+        const appGrid = document.getElementById('appGrid');
+        const detailView = document.getElementById('detailView');
+        const detailTitle = document.getElementById('detailTitle');
+        const listContainer = document.getElementById('listContainer');
+        const clockElement = document.getElementById('clock');
+        const miniMusicBtn = document.getElementById('miniMusicBtn');
+        const miniMusicIcon = document.getElementById('miniMusicIcon');
+        const toastAlert = document.getElementById('toastAlert');
+        const toastText = document.getElementById('toastText');
+        const toastIcon = document.getElementById('toastIcon');
+        const reviewModal = document.getElementById('reviewModal');
+        const bgMusic = document.getElementById('bgMusic');
+        
+        bgMusic.addEventListener('play', () => updatePlayState(true));
+        bgMusic.addEventListener('pause', () => updatePlayState(false));
+
+        function togglePlay() {
+            if (isPlaying) {
+                bgMusic.pause();
+            } else {
+                bgMusic.play().catch(e => {
+                    console.log("กรุณากดคลิกบนหน้าจอเพื่ออนุญาตการเล่นเสียง");
+                });
+            }
+        }
+        
+        function updatePlayState(playing) {
+            isPlaying = playing;
+            if (playing) {
+                miniMusicBtn.classList.add('playing');
+                miniMusicIcon.className = "fas fa-compact-disc fa-spin text-[#D81B60]";
+            } else {
+                miniMusicBtn.classList.remove('playing');
+                miniMusicIcon.className = "fas fa-music text-[#D81B60]";
+            }
+        }
+
+        function showToast(message, iconClass = "fa-check-circle") {
+            clearTimeout(toastTimeout);
+            toastText.textContent = message;
+            toastIcon.className = `fas ${iconClass} text-white`;
+            toastAlert.classList.add('show');
+            toastTimeout = setTimeout(() => { toastAlert.classList.remove('show'); }, 2400);
+        }
+
+        function initAppGrid() {
+            appGrid.innerHTML = '';
+            categories.forEach(category => {
+                const card = document.createElement('div');
+                card.className = 'app-card-block';
+                card.onclick = () => openCategory(category);
+                
+                card.innerHTML = `
+                    <div class="app-icon-square">
+                        <i class="${category.icon}"></i>
+                    </div>
+                    <div class="app-title-main">${category.mainTitle}</div>
+                    <div class="app-title-sub">${category.subTitle}</div>
+                `;
+                appGrid.appendChild(card);
+            });
+        }
+
+        function openCategory(category) {
+            detailTitle.innerHTML = `
+                <div class="w-full text-center truncate text-[15px] font-extrabold text-[#E24978] leading-tight">${category.mainTitle}</div>
+                <div class="w-full text-center truncate text-[11px] text-[#A36B7E] font-bold mt-0.5">${category.subTitle}</div>
+            `;
+            listContainer.innerHTML = '';
+
+            if (category.type === 'payment') {
+                if(category.headerGif) {
+                    const gifDiv = document.createElement('div');
+                    gifDiv.className = 'mb-3 rounded-2xl overflow-hidden border-2 border-[#FFC0CB] shadow-sm';
+                    gifDiv.innerHTML = `<img src="${category.headerGif}" alt="Payment Gif" class="w-full h-auto block">`;
+                    listContainer.appendChild(gifDiv);
+                }
+
+                if(category.bankImage) {
+                    const bankImgDiv = document.createElement('div');
+                    bankImgDiv.className = 'mb-3 rounded-2xl overflow-hidden border-2 border-[#FFC0CB] shadow-sm';
+                    bankImgDiv.innerHTML = `<img src="${category.bankImage}" alt="Bank Detail Image" class="w-full h-auto block">`;
+                    listContainer.appendChild(bankImgDiv);
+                }
+
+                renderListItems(category.items);
+            } 
+            else if (category.type === 'reviews') {
+                const reviewBanner = document.createElement('div');
+                reviewBanner.innerHTML = `
+                    <div class="mb-3 rounded-2xl overflow-hidden border-2 border-[#FFC2D1] shadow-sm">
+                        <video src="https://videotourl.com/videos/1789653526563-78a16294-f145-47b1-8231-927c5014de11.mp4" autoplay loop muted playsinline class="w-full h-auto block"></video>
+                    </div>
+                    <div class="bg-gradient-to-r from-[#FFF0F4] to-[#FFE5EC] p-4 rounded-2xl border-2 border-[#FFC2D1] mb-4 text-center shadow-sm">
+                        <h3 class="text-sm font-extrabold text-[#E24978] mb-1"><i class="fas fa-heart text-[#E24978] mr-1"></i> WELCOME TO REVIEW</h3>
+                        <p class="text-[11px] text-[#8C5B6B] mb-3 font-semibold">รีวิวให้ร้านเจนนี่เพื่อเป็นกำลังใจให้กันน้าคะ 💖✨</p>
+                        <button onclick="openReviewModal()" class="bg-[#E24978] hover:bg-[#C2185B] text-white font-extrabold py-2.5 px-5 rounded-xl text-xs shadow-md active:scale-95 transition-transform inline-flex items-center gap-1.5">
+                            <i class="fas fa-pen"></i> เขียนรีวิว
+                        </button>
+                    </div>
+                    <div id="reviewsListContainer"></div>
+                `;
+                listContainer.appendChild(reviewBanner);
+                renderReviewsList();
+            }
+            else if (category.type === 'contact') {
+                const profileContainer = document.createElement('div');
+                profileContainer.innerHTML = `
+                    <div class="text-center mb-4 mt-1">
+                        <div class="profile-img-container">
+                            <img src="https://www.image2url.com/r2/default/videos/1789632321840-d7aa0068-fee2-4827-b37d-5df676047f2a.mp4" alt="Profile GIF/Image">
+                        </div>
+                        <h2 class="text-base font-black text-[#E24978]">𐙚 JENNY SHOP ⁎ ♡</h2>
+                        <p class="text-[11px] text-[#A36B7E] font-bold mt-0.5">🎀 ช่องทางการติดต่อร้านเจนนี่ 🎀</p>
+                    </div>
+                `;
+                listContainer.appendChild(profileContainer);
+                renderListItems(category.items);
+            }
+            else {
+                renderListItems(category.items);
+            }
+
+            detailView.classList.add('active');
+        }
+
+        function openReviewModal() { reviewModal.classList.add('active'); }
+        function closeReviewModal() { 
+            reviewModal.classList.remove('active'); 
+            removeSelectedImage();
+        }
+
+        function handleImagePreview(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgPreview = document.getElementById('imagePreview');
+                    const previewContainer = document.getElementById('imagePreviewContainer');
+                    imgPreview.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeSelectedImage() {
+            const fileInput = document.getElementById('evidenceFile');
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const imgPreview = document.getElementById('imagePreview');
+            if (fileInput) fileInput.value = '';
+            if (imgPreview) imgPreview.src = '';
+            if (previewContainer) previewContainer.classList.add('hidden');
+        }
+
+        function compressImageToBase64(file, maxSizeBytes = 400000) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onerror = error => reject(error);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onerror = error => reject(error);
+                    img.onload = () => {
+                        let quality = 0.75;
+                        let maxDimension = 800;
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        function processCompression() {
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > maxDimension || height > maxDimension) {
+                                if (width > height) {
+                                    height = Math.round((height * maxDimension) / width);
+                                    width = maxDimension;
+                                } else {
+                                    width = Math.round((width * maxDimension) / height);
+                                    height = maxDimension;
+                                }
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.clearRect(0, 0, width, height);
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+
+                            if (dataUrl.length > maxSizeBytes && quality > 0.2) {
+                                quality -= 0.15;
+                                maxDimension = Math.round(maxDimension * 0.8);
+                                processCompression();
+                            } else {
+                                resolve(dataUrl);
+                            }
+                        }
+
+                        processCompression();
+                    };
+                };
+            });
+        }
+
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('#starSelection i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-pink-500', 'drop-shadow-sm');
+                } else {
+                    star.classList.remove('text-pink-500', 'drop-shadow-sm');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        async function submitReview() {
+            const name = document.getElementById('reviewName').value.trim();
+            const channel = document.getElementById('reviewChannel').value.trim();
+            const comment = document.getElementById('reviewComment').value.trim();
+            const fileInput = document.getElementById('evidenceFile');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const submitIcon = document.getElementById('submitIcon');
+
+            if (!name || !channel || !comment || currentRating === 0) {
+                showToast("รบกวนกรอกข้อมูลและให้คะแนนดาวให้ครบถ้วนนะคะ", "fa-exclamation-circle");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-70');
+            submitIcon.className = 'fas fa-spinner fa-spin';
+            submitText.textContent = 'กำลังบีบอัดและส่งข้อมูล...';
+
+            let evidenceBase64 = null;
+            if (fileInput.files.length > 0) {
+                try {
+                    evidenceBase64 = await compressImageToBase64(fileInput.files[0]);
+                } catch (e) {
+                    console.error("Error compressing image:", e);
+                }
+            }
+
+            const now = new Date();
+            const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+            const newReviewData = {
+                name: name,
+                channel: channel,
+                comment: comment,
+                rating: currentRating,
+                date: dateStr,
+                evidence: evidenceBase64,
+                timestamp: db ? firebase.firestore.FieldValue.serverTimestamp() : new Date() 
+            };
+
+            if(db) {
+                try {
+                    await db.collection("jenny_reviews").add(newReviewData);
+                    showToast("ขอบคุณสำหรับรีวิวร้านเจนนี่นะคะ 💖", "fa-check-circle");
+                } catch (error) {
+                    console.error("Error adding review: ", error);
+                    showToast("เกิดข้อผิดพลาดในการบันทึกข้อมูล", "fa-times-circle");
+                }
+            } else {
+                reviewsData.unshift(newReviewData);
+                renderReviewsList();
+                showToast("ขอบคุณสำหรับรีวิวร้านเจนนี่นะคะ 💖", "fa-check-circle");
+            }
+
+            document.getElementById('reviewName').value = '';
+            document.getElementById('reviewChannel').value = '';
+            document.getElementById('reviewComment').value = '';
+            removeSelectedImage();
+            setRating(0);
+            
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-70');
+            submitIcon.className = 'fas fa-paper-plane';
+            submitText.textContent = 'ส่งรีวิวค่ะ ✨';
+
+            closeReviewModal();
+        }
+
+        function renderReviewsList() {
+            const container = document.getElementById('reviewsListContainer');
+            if (!container) return;
+            
+            container.innerHTML = '<h3 class="text-xs font-bold text-[#D81B60] mb-2 px-1"><i class="fas fa-heart text-pink-400 mr-1"></i> รีวิวทั้งหมดจากลูกค้า</h3>';
+            
+            if(reviewsData.length === 0) {
+                container.innerHTML += '<div class="text-center text-xs text-[#AD7A8B] py-6 bg-white rounded-2xl border border-[#FFE4E1]">ยังไม่มีรีวิวค่ะ ร่วมเขียนรีวิวให้ร้านเจนนี่ได้เลยน้า ✨</div>';
+                return;
+            }
+
+            reviewsData.forEach(review => {
+                let starsHtml = '';
+                for(let i=0; i<5; i++) {
+                    if(i < review.rating) {
+                        starsHtml += '<i class="fas fa-star text-pink-500 text-[10px] mr-0.5 drop-shadow-sm"></i>';
+                    } else {
+                        starsHtml += '<i class="fas fa-star text-gray-200 text-[10px] mr-0.5"></i>';
+                    }
+                }
+
+                let evidenceHtml = '';
+                if (review.evidence) {
+                    evidenceHtml = `<div class="mt-2"><img src="${review.evidence}" alt="Review Attach" class="w-full h-36 object-cover rounded-xl border border-[#FFE4E1] shadow-sm"></div>`;
+                }
+
+                const reviewHtml = `
+                    <div class="bg-white p-3.5 rounded-2xl shadow-sm border-2 border-[#FFE4E1] mb-3 relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-1">
+                            <div>
+                                <div class="font-bold text-[#D81B60] text-[13px] flex items-center gap-1.5">
+                                    <div class="w-6 h-6 rounded-full bg-[#FFE4E1] flex items-center justify-center text-[#D81B60] text-[10px]">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    ${review.name}
+                                </div>
+                                <div class="text-[10px] text-[#8C5B6B] mt-1 ml-7 bg-[#FFF0F5] inline-block px-2 py-0.5 rounded-md border border-[#FFC0CB]">
+                                    รายการ: <span class="font-bold text-[#D81B60]">${review.channel}</span>
+                                </div>
+                            </div>
+                            <div class="text-[9px] text-[#AD7A8B] font-semibold bg-[#FFF0F5] px-2 py-0.5 rounded-lg">${review.date}</div>
+                        </div>
+                        <div class="ml-7 my-1 flex items-center bg-[#FFF0F5] w-max px-2 py-0.5 rounded-full border border-[#FFC0CB]">
+                            ${starsHtml}
+                        </div>
+                        <p class="text-xs text-[#4A353B] ml-7 mt-1.5 leading-relaxed bg-[#FFF0F5]/50 p-2 rounded-xl border border-[#FFE4E1] font-medium">${review.comment}</p>
+                        ${review.evidence ? `<div class="ml-7">${evidenceHtml}</div>` : ''}
+                    </div>
+                `;
+                container.innerHTML += reviewHtml;
+            });
+        }
+
+        // ฟังก์ชันสร้างรายการสินค้าแบบปรับใหม่ (แสดงเฉพาะหัวข้อ + ไอคอนเปิดลิงก์)
+        function renderListItems(items) {
+            items.forEach(item => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-item';
+                
+                if (item.link) {
+                    listItem.style.cursor = 'pointer';
+                    listItem.onclick = () => window.open(item.link, '_blank');
+                }
+                
+                let actionButton = '';
+                if (item.link) {
+                    actionButton = `
+                        <div class="w-8 h-8 rounded-xl bg-[#FFF0F4] border border-[#FFC0CB] text-[#D81B60] flex items-center justify-center flex-shrink-0 self-center hover:bg-[#FFE5EC] transition-colors">
+                            <i class="fas fa-external-link-alt text-xs"></i>
+                        </div>
+                    `;
+                } else {
+                    actionButton = `
+                        <button class="copy-btn whitespace-nowrap flex-shrink-0 self-center" onclick="copyToClipboard('${item.number}', event)">
+                            คัดลอก
+                        </button>
+                    `;
+                }
+
+                if (item.number) {
+                    listItem.innerHTML = `
+                        <div class="w-full">
+                            <div class="text-[10px] text-[#D81B60] font-bold mb-1 tracking-wider">${item.label}</div>
+                            <div class="flex items-center justify-between gap-2 min-h-[28px]">
+                                <div class="number-text break-words flex-grow leading-tight flex items-center">${item.number}</div>
+                                ${actionButton}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    listItem.innerHTML = `
+                        <div class="w-full flex items-center justify-between gap-2 py-1">
+                            <div class="text-sm font-extrabold text-[#E24978] flex-grow leading-snug">${item.label}</div>
+                            ${actionButton}
+                        </div>
+                    `;
+                }
+                listContainer.appendChild(listItem);
+            });
+        }
+
+        function closeDetail() { detailView.classList.remove('active'); }
+
+        function copyToClipboard(text, event) {
+            if(event) event.stopPropagation();
+            const el = document.createElement('textarea');
+            el.value = text;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast("คัดลอกข้อมูลเรียบร้อยแล้วค่ะ ✨", "fa-check-circle");
+        }
+
+        const particles = ['🐰', '🧁', '✨', '🌸'];
+        function spawnParticle() {
+            const drop = document.createElement('div');
+            drop.className = 'cafe-drop';
+            drop.textContent = particles[Math.floor(Math.random() * particles.length)];
+            drop.style.left = (Math.random() * 92 + 4) + 'vw';
+            const duration = Math.random() * 4 + 5;
+            drop.style.animationDuration = duration + 's';
+            drop.style.fontSize = (Math.random() * 8 + 16) + 'px';
+            document.body.appendChild(drop);
+            setTimeout(() => { drop.remove(); }, duration * 1000);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            clockElement.innerHTML = `<i class="fas fa-heart text-pink-500 mr-1.5"></i>${hours}:${minutes}`;
+        }
+
+        window.onload = () => {
+            initAppGrid();
+            updateClock();
+            initFirebaseReviews();
+
+            setInterval(updateClock, 10000);
+            setInterval(spawnParticle, 1000);
+
+            const startAutoMusic = () => {
+                if (!isPlaying) {
+                    bgMusic.play().catch(e => console.log("รออนุญาตเล่นเสียง"));
+                }
+            };
+            document.addEventListener('click', startAutoMusic, { once: true });
+            document.addEventListener('touchstart', startAutoMusic, { once: true });
+        };
+    </script>
+</body>
+</html>
